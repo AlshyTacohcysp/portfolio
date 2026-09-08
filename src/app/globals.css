@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  Design tokens — Tailwind v4 (CSS-first)                            */
+/* ------------------------------------------------------------------ */
+@theme {
+  --color-ink: #0a0a0b;
+  --color-coal: #141417;
+  --color-slate-deep: #1c1c21;
+  --color-bone: #edebe6;
+  --color-ash: #97958e;
+  --color-acid: #c8f14f;
+  --color-ember: #ff5d3d;
+
+  --font-sans: "Space Grotesk Variable", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+
+  --animate-marquee: marquee 36s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 36s linear infinite;
+  --animate-blink: blink 1.4s steps(2, start) infinite;
+  --animate-bob: bob 2.4s ease-in-out infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes marquee-reverse {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0.15;
+    }
+  }
+  @keyframes bob {
+    50% {
+      transform: translateY(6px);
+    }
+  }
+}
+
+@custom-variant pointer-fine (@media (hover: hover) and (pointer: fine));
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                               */
+/* ------------------------------------------------------------------ */
+:root {
+  color-scheme: dark;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-acid);
+  color: var(--color-ink);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-slate-deep);
+  border-radius: 999px;
+  border: 2px solid var(--color-ink);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2b2b31;
+}
+
+/* Hide native cursor only where the custom cursor is rendered */
+@media (hover: hover) and (pointer: fine) {
+  body,
+  a,
+  button,
+  [role="button"],
+  input,
+  textarea {
+    cursor: none;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-acid);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Utilities                                                          */
+/* ------------------------------------------------------------------ */
+
+/* Hairline used across sections */
+@utility hairline {
+  border-color: color-mix(in oklab, var(--color-bone) 12%, transparent);
+}
+
+/* Animated link underline (fills from the left on hover) */
+.u-line {
+  background-image: linear-gradient(var(--color-acid), var(--color-acid));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.u-line:hover,
+.u-line:focus-visible {
+  background-size: 100% 1px;
+}
+
+/* Faint technical grid with a radial fade — hero backdrop */
+.hero-grid {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--color-bone) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--color-bone) 5%, transparent) 1px, transparent 1px);
+  background-size: 88px 88px;
+  mask-image: radial-gradient(75% 60% at 50% 35%, black 0%, transparent 78%);
+}
+
+/* Soft acid glow behind hero headline */
+.hero-glow {
+  background: radial-gradient(
+    42% 46% at 50% 42%,
+    color-mix(in oklab, var(--color-acid) 9%, transparent),
+    transparent 70%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
